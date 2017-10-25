@@ -53,6 +53,6 @@ def backprop(error, inp, rate):
 def sigmoid(X):
     return 1/(1+np.exp(-X))
 
-train(xtr, ytr,1)
+train(xtr, ytr,100)
 test(xts , yts)
 
