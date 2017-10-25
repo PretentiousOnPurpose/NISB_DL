@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-import bigfloat
 
-ds = pd.read_csv('data.csv')
-y_temp = ds.iloc[: , 1:2].values
+ds = pd.read_csv('data1.csv')
+X = np.array(ds.iloc[: , 1:-1].values)
+y_temp = np.array(ds.iloc[: , -1:])
 y = []
 for i in y_temp:
     if i == 'M':
@@ -11,35 +11,48 @@ for i in y_temp:
     elif i == 'B':
         y.append(0)
         
-x = list(ds.iloc[: , 2:32].values)
-x = np.append(arr=np.ones((569, 1)), values=x, axis=1)
-w = np.random.randn(31)
+w = np.random.rand(31)
 
+from sklearn.preprocessing import MinMaxScaler
+MMS = MinMaxScaler()
+MMS.fit(X)
+X = MMS.transform(X)
+X = np.append(arr=np.ones((569, 1)), values=X, axis=1)
 from sklearn.model_selection import train_test_split
-xtr, xts,  ytr, yts = train_test_split(x, y, test_size=0.2)
+xtr, xts,  ytr, yts = train_test_split(X, y, test_size=0.2)
 
 def train(xtr, ytr, steps):
     for s in range(steps):
         for i in range(len(xtr)):
             y = np.array(xtr[i]).dot(w)
             err = ytr[i] - sigmoid(y)
-            backprop(err, xtr[i], 0.005)
-
+            backprop(err, xtr[i], 0.05)
+            print(err)
+            
 def test(xts, yts):
     acc = 0
     for i in range(len(xts)):
         y = np.array(xts[i]).dot(w)
-        if sigmoid(y) == yts[i]:
+        if sigmoid(y) > 0.5 and yts[i] == 1:
             acc += 1
+        elif sigmoid(y) <= 0.5 and yts[i] == 0:
+            acc += 1
+            
     return acc/len(xts)
+
+def Predict(InV):
+    if sigmoid(np.array(InV).dot(w)) > 0.5:
+        print("Yes, Cancer Detected")
+    else:
+        print("No , Cancer")
 
 def backprop(error, inp, rate):
     for i in range(len(w)):
         w[i] = w[i] + rate*error*inp[i]
-        #print(w[i])
         
 def sigmoid(X):
-    return 1/(1+bigfloat.exp(-X))
+    return 1/(1+np.exp(-X))
 
-train(xtr, ytr,10)
+train(xtr, ytr,1)
 test(xts , yts)
+
