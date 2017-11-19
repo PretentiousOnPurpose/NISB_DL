@@ -17,7 +17,7 @@ for x , y in zip(x_data , y_data):
     y_ = m*x + b
     err += 0.5*(y_ - y)**2
 
-opt = tf.train.GradientDescentOptimizer(0.005)
+opt = tf.train.GradientDescentOptimizer(0.0005)
 exe = opt.minimize(err)
 init = tf.global_variables_initializer()
 
