@@ -5,20 +5,17 @@ import matplotlib.pyplot as plt
 np.random.seed(1)
 tf.set_random_seed(1)
 
-x_data = np.linspace(0, 1000, 1000) + np.random.uniform(-1, 1, 1000)
-y_data = x_data * 2 + 10 + np.random.uniform(-1, 1, 1000)
+x_data = np.linspace(1, 10, 10) + np.random.uniform(-1, 1, 10)
+y_data = x_data * 2 + 10 + np.random.uniform(-1, 1, 10)
 plt.plot(x_data, y_data, "*")
 plt.show()
 m = tf.Variable(np.random.random(1)[0])
 b = tf.Variable(np.random.random(1)[0])
 
 err = 0
-batch = 0
-size = 10
-for x , y in zip(x_data[batch:batch+ size] , y_data[batch:batch+ size]):
+for x , y in zip(x_data , y_data):
     y_ = m*x + b
-    err += 2*(y_ - y)**2
-batch += size
+    err += 0.5*(y_ - y)**2
 
 opt = tf.train.GradientDescentOptimizer(0.005)
 exe = opt.minimize(err)
