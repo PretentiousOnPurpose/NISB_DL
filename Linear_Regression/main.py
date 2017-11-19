@@ -24,7 +24,7 @@ def train(xtr, ytr, steps):
         for i in range(len(xtr)):
             y = np.array(xtr[i]).dot(w)
             err = ytr[i] - y
-            backprop(err, xtr[i], 0.05)
+            gradDes(err, xtr[i], 0.05)
             
 def test(xts):
     res = []
@@ -35,7 +35,7 @@ def test(xts):
 def Predict(InV):
     return MMSy.inverse_transform(np.array(InV).dot(w)) 
 
-def backprop(error, inp, rate):
+def gradDes(error, inp, rate):
     for i in range(len(w)):
         w[i] = w[i] + rate*error*inp[i]
 
