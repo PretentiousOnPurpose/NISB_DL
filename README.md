@@ -1,2 +1,2 @@
-# NISB_ML
-# Code Repository for Machine Learning Focus Group | NISB
+# NISB_DL
+Code Repository for Deep Learning Focus Group | NISB
